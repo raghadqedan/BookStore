@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BookStore.Models
+namespace BookStore.ViewModel
 {
-    public class Category
+    public class CategoryVM
     {
+
         public int Id { get; set; }
 
-        [MaxLength(30)]
+        [Required(ErrorMessage="Please Insert Name")]
+        [MaxLength(30,ErrorMessage ="length must less than 30")]
         public string Name { get; set; } = null!;
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public DateTime UpdatedOn { get; set; } = DateTime.Now;
-
     }
 }
