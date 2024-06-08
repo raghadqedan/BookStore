@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BookStore.ViewModel
 {
@@ -7,6 +9,7 @@ namespace BookStore.ViewModel
 
         public int Id { get; set; }
 
+       // [Remote("CheckName",null,ErrorMessage ="")]
         [Required(ErrorMessage="Please Insert Name")]
         [MaxLength(30,ErrorMessage ="length must less than 30")]
         public string Name { get; set; } = null!;

@@ -1,0 +1,71 @@
+﻿@using BookStore.ViewModel
+@model List<BookViewModel>
+@section Title{
+    Books
+}
+@section SubTitle{
+    Show
+}
+@section Buttons{
+    <a asp-controller="Book" asp-action="Create" class="btn btn-primary">Create</a>
+}
+
+
+
+<div class="card-body">
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
+            No Data Found
+        </div>
+
+    }
+    else
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Publisher</th>
+                    <th>PublisherDate</th>
+                    <th>Image</th>
+                    <th>Categories</th>
+                    <th style="width:250px">Actions</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in @Model)
+                {
+                    <tr>
+                        <th>@item.Id</th>
+                        <th>@item.Title</th>
+                        <th>@item.Author</th>
+                        <th>@item.Publisher</th>
+                        <th>@item.PublishDate</th>
+                        <th><img  src="~/img/books/@item.ImageUrl" width="50px"/></th>
+                        <th>@String.Join(", ",item.Categories)</th>
+
+                        <th>
+                            <a class="btn btn-sm btn-primary" asp-controller="Authors" asp-action="Edit" asp-route-id="@item.Id">
+                                <i class="far fa-edit"></i> Edit
+                            </a>
+                            <a class="btn btn-sm btn-info" asp-controller="Authors" asp-action="Details" asp-route-id="@item.Id">
+                                <i class="fas fa-info-circle"></i> Details
+                            </a>
+                            <a class="btn btn-sm btn-danger js-delete" asp-controller="Book" asp-action="Delete"  asp-route-id="@item.Id" >
+                                <i class="fas fa-trash "></i> Delete
+                            </a>
+                        </th>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+     }
+</div>

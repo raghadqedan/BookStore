@@ -1,0 +1,101 @@
+﻿@using BookStore.ViewModel
+@model List<AuthorVM>
+@section Title{
+    Authors
+}
+@section SubTitle{
+    Show
+}
+@section Buttons{
+        <a  asp-controller="Authors" asp-action="Create"class="btn btn-primary">Create</a>
+}
+<div class="card-body">
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
+            No Data Found
+        </div>
+
+    }
+    else
+    {       
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Name</th>
+                    <th style="width:250px">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in @Model)
+                {
+                        <tr>
+                            <th>@item.Id</th>
+                            <th>@item.Name</th>
+                            <th> <a class="btn btn-sm btn-primary" asp-controller="Authors" asp-action="Edit" asp-route-id="@item.Id">
+                                        <i class="far fa-edit"></i> Edit</a>
+                                    <a class="btn btn-sm btn-info" asp-controller="Authors" asp-action="Details" asp-route-id="@item.Id">
+                                         <i class="fas fa-info-circle"></i> Details</a>
+                                    <a class="btn btn-sm btn-danger js-delete" data-id="@item.Id">
+                                        <i class="fas fa-trash "></i> Delete
+                                    </a>
+                                </th>
+                        </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+    }
+</div>
+@section Scripts{
+<script>
+        
+         document.querySelectorAll(".js-delete").forEach((btn)=>{
+            btn.addEventListener("click", async () => {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then(async(result) => {
+                    if (result.isConfirmed) {
+            
+                        const id = btn.dataset.id;
+                        const response = await fetch(`/Authors/Delete/${id}`,{
+                            method: 'POST'
+                        });
+                        if (response.ok) {
+                            btn.closest("tr").remove();
+                            const Toast = Swal.mixin({
+                          toast: true,
+                          position: 'top-end',
+                          showConfirmButton: false,
+                          timer: 3000,
+                          timerProgressBar: true,
+                        })
+                             Toast.fire({
+                                icon: 'success',
+                                title: 'Author deleted Succesfully',
+                            })
+
+                        }
+
+                    }
+
+            });
+
+        })
+                })
+                                     
+    
+ 
+</script>
+}
